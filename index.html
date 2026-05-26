@@ -208,22 +208,24 @@
                         <li>Research</li>
                     </ul>
                 </div>
-                <div class="service-card" id="service-consulting">
+                <div class="service-card" id="service-devops">
                     <div class="service-icon">
                         <svg viewBox="0 0 48 48" fill="none">
-                            <path d="M24 4l4 8 9 1.3-6.5 6.3 1.5 9L24 24.3 15.8 28.6l1.5-9L10.8 13.3l9-1.3z"
-                                stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" />
-                            <path d="M16 34h16M18 40h12" stroke="currentColor" stroke-width="2.5"
-                                stroke-linecap="round" />
+                            <path d="M6 24h36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                            <path d="M14 24c4-12 16-12 20 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                            <path d="M14 24c4 12 16 12 20 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                            <circle cx="14" cy="24" r="3" fill="currentColor" />
+                            <circle cx="34" cy="24" r="3" fill="currentColor" />
+                            <circle cx="24" cy="12" r="3" fill="currentColor" />
+                            <circle cx="24" cy="36" r="3" fill="currentColor" />
                         </svg>
                     </div>
-                    <h3 class="service-title">Tech Consulting</h3>
-                    <p class="service-desc">Strategic technology guidance to help you choose the right stack,
-                        architecture, and approach for your digital transformation.</p>
+                    <h3 class="service-title">DevOps Solutions</h3>
+                    <p class="service-desc">Streamline development pipelines, automate cloud infrastructure, and optimize systems for speed, reliability, and security.</p>
                     <ul class="service-tags">
-                        <li>Strategy</li>
-                        <li>Architecture</li>
-                        <li>Audit</li>
+                        <li>CI/CD</li>
+                        <li>Kubernetes</li>
+                        <li>Terraform</li>
                     </ul>
                 </div>
             </div>
@@ -242,10 +244,10 @@
                                 <span class="code-dot code-dot--red"></span>
                                 <span class="code-dot code-dot--yellow"></span>
                                 <span class="code-dot code-dot--green"></span>
-                                <span class="code-filename">nexabyte.js</span>
+                                <span class="code-filename">zetashift.js</span>
                             </div>
                             <div class="code-body">
-                                <pre><code><span class="code-keyword">const</span> <span class="code-var">nexaByte</span> = {
+                                <pre><code><span class="code-keyword">const</span> <span class="code-var">zetaShift</span> = {
   <span class="code-prop">mission</span>: <span class="code-string">"Build the future"</span>,
   <span class="code-prop">passion</span>: <span class="code-string">"Infinite"</span>,
   <span class="code-prop">coffee</span>: <span class="code-number">Infinity</span>,
@@ -483,7 +485,7 @@
                             </div>
                             <div>
                                 <span class="detail-label">Email</span>
-                                <span class="detail-value">hello@nexabyte.dev</span>
+                                <span class="detail-value">hello@zetashift.co</span>
                             </div>
                         </div>
                         <div class="contact-detail">
@@ -658,15 +660,19 @@
                                         </span>
                                         <span class="checkbox-label">UI/UX Design</span>
                                     </label>
-                                    <label class="checkbox-card" for="svc-consult">
-                                        <input type="checkbox" id="svc-consult" name="services" value="Tech Consulting">
+                                    <label class="checkbox-card" for="svc-devops">
+                                        <input type="checkbox" id="svc-devops" name="services" value="DevOps Solutions">
                                         <span class="checkbox-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" />
-                                                <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+                                                <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+                                                <line x1="6" y1="6" x2="6.01" y2="6" />
+                                                <line x1="6" y1="18" x2="6.01" y2="18" />
+                                                <line x1="20" y1="6" x2="16" y2="6" />
+                                                <line x1="20" y1="18" x2="16" y2="18" />
                                             </svg>
                                         </span>
-                                        <span class="checkbox-label">Tech Consulting</span>
+                                        <span class="checkbox-label">DevOps Solutions</span>
                                     </label>
                                 </div>
                                 <span class="form-error" id="services-error">Please select at least one service</span>

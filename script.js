@@ -1,5 +1,5 @@
 /* ============================================
-   NEXABYTE — Interactive JavaScript
+   ZETASHIFT LABS — Interactive JavaScript
    Navigation, Animations, Forms, Particles
    ============================================ */
 
