@@ -1,13 +1,13 @@
 /**
  * ============================================
- * NexaByte — Google Apps Script for Form Data
+ * ZetaShift Labs — Google Apps Script for Form Data
  * ============================================
  *
  * SETUP INSTRUCTIONS:
  * 
  * 1. Go to https://sheets.google.com and create a new spreadsheet
  * 
- * 2. Name the spreadsheet "NexaByte - Form Submissions"
+ * 2. Name the spreadsheet "ZetaShift Labs - Form Submissions"
  * 
  * 3. Add these headers in Row 1 (columns A through K):
  *    A: Timestamp
@@ -83,7 +83,7 @@ function doGet(e) {
   return ContentService
     .createTextOutput(JSON.stringify({ 
       status: 'ok', 
-      message: 'NexaByte form endpoint is active',
+      message: 'ZetaShift Labs form endpoint is active',
       timestamp: new Date().toISOString()
     }))
     .setMimeType(ContentService.MimeType.JSON);
