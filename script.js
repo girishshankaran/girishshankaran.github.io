@@ -382,8 +382,27 @@ function isValidEmail(email) {
    3. Paste the Apps Script code (see google-apps-script.js in project root)
    4. Deploy as Web App (Execute as: Me, Access: Anyone)
    5. Paste the deployment URL below
+   IMPORTANT: Do not commit your Apps Script URL to this public repository.
    ============================================ */
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyiS85UgzatOHBgddCcJoTR7uodZQ-cJbjWeaP5heFQ1yVZC5ubIKkqPgShqm61ZD0mGg/exec'; // <-- Paste your Apps Script Web App URL here
+const GOOGLE_SHEETS_URL = ''; // <-- Add your Apps Script Web App URL locally if needed
+
+function buildMailtoLink(formData) {
+    const subject = encodeURIComponent(`Project inquiry from ${formData.name || 'Website visitor'}`);
+    const body = [
+        `Name: ${formData.name || ''}`,
+        `Email: ${formData.email || ''}`,
+        `Phone: ${formData.phone || ''}`,
+        `Company: ${formData.company || ''}`,
+        `Services: ${formData.services || ''}`,
+        `Budget: ${formData.budget || ''}`,
+        `Timeline: ${formData.timeline || ''}`,
+        `Project Title: ${formData.projectTitle || ''}`,
+        `Message: ${formData.message || ''}`,
+        `Reference Link: ${formData.referenceLink || ''}`,
+    ].join('\n');
+
+    return `mailto:hello@zetashift.co?subject=${subject}&body=${encodeURIComponent(body)}`;
+}
 
 function initContactForm() {
     const form = document.getElementById('contact-form');
@@ -423,20 +442,19 @@ function initContactForm() {
         try {
             if (GOOGLE_SHEETS_URL) {
                 // Send to Google Sheets
-                const response = await fetch(GOOGLE_SHEETS_URL, {
+                await fetch(GOOGLE_SHEETS_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Apps Script requires no-cors
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData),
                 });
 
                 console.log('✅ Form data sent to Google Sheets');
             } else {
-                // Fallback: log to console if URL not configured
                 console.log('📧 Form submission data (Google Sheets URL not configured):', formData);
-                console.log('💡 To save data, configure GOOGLE_SHEETS_URL in script.js');
-                // Simulate network delay for demo
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                const mailtoLink = buildMailtoLink(formData);
+                window.location.href = mailtoLink;
+                await new Promise(resolve => setTimeout(resolve, 600));
             }
 
             // Show success state

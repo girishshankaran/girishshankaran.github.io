@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://girishshankaran.github.io/prof-website/sitemap.xml
