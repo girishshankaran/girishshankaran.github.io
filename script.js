@@ -384,7 +384,7 @@ function isValidEmail(email) {
    5. Paste the deployment URL below
    IMPORTANT: Do not commit your Apps Script URL to this public repository.
    ============================================ */
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx2hsfBDXZCsqHqpBiN_p9SfY_B3EnptZRl_J5e0MwAzN3raPiSMa3XowNq-WYWBq5xYw/exec'; // <-- Paste the deployed Apps Script Web App URL here
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwcpf7R_-DP1f3MT72T_A28LAJQdRjpCV9rO80jIqZSlRUizbp4zRbl2ZVwPWMArkQotA/exec'; // <-- Deployed Apps Script Web App URL
 
 function buildMailtoLink(formData) {
     const subject = encodeURIComponent(`Project inquiry from ${formData.name || 'Website visitor'}`);
