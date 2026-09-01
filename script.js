@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     initScrollReveal();
     initCounterAnimation();
-    initTestimonials();
     initContactForm();
     initFileUpload();
     initCharCounter();
@@ -105,7 +104,7 @@ function initParticles() {
    ============================================ */
 function initScrollReveal() {
     const revealElements = document.querySelectorAll(
-        '.service-card, .about-grid, .portfolio-card, .testimonial-card, ' +
+        '.service-card, .about-grid, ' +
         '.section-header, .contact-grid, .footer-grid'
     );
 
@@ -164,89 +163,6 @@ function initCounterAnimation() {
 
     const statsSection = document.getElementById('hero-stats');
     if (statsSection) observer.observe(statsSection);
-}
-
-/* ============================================
-   TESTIMONIALS CAROUSEL
-   ============================================ */
-function initTestimonials() {
-    const track = document.getElementById('testimonials-track');
-    const prevBtn = document.getElementById('testimonial-prev');
-    const nextBtn = document.getElementById('testimonial-next');
-    const dots = document.querySelectorAll('#testimonial-dots .dot');
-
-    if (!track || !prevBtn || !nextBtn) return;
-
-    let currentIndex = 0;
-    const cards = track.querySelectorAll('.testimonial-card');
-    const totalCards = cards.length;
-
-    function getCardsPerView() {
-        if (window.innerWidth <= 768) return 1;
-        if (window.innerWidth <= 1024) return 2;
-        return 3;
-    }
-
-    function updateCarousel() {
-        const cardsPerView = getCardsPerView();
-        const maxIndex = Math.max(0, totalCards - cardsPerView);
-        currentIndex = Math.min(currentIndex, maxIndex);
-
-        const gap = 24;
-        const cardWidth = track.parentElement.offsetWidth / cardsPerView - (gap * (cardsPerView - 1) / cardsPerView);
-        const offset = currentIndex * (cardWidth + gap);
-
-        track.style.transform = `translateX(-${offset}px)`;
-
-        // Update dots
-        dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === currentIndex);
-        });
-    }
-
-    prevBtn.addEventListener('click', () => {
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateCarousel();
-        }
-    });
-
-    nextBtn.addEventListener('click', () => {
-        const cardsPerView = getCardsPerView();
-        const maxIndex = Math.max(0, totalCards - cardsPerView);
-        if (currentIndex < maxIndex) {
-            currentIndex++;
-            updateCarousel();
-        }
-    });
-
-    dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-            currentIndex = i;
-            updateCarousel();
-        });
-    });
-
-    window.addEventListener('resize', updateCarousel);
-    updateCarousel();
-
-    // Auto-play
-    let autoPlay = setInterval(() => {
-        const cardsPerView = getCardsPerView();
-        const maxIndex = Math.max(0, totalCards - cardsPerView);
-        currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
-        updateCarousel();
-    }, 5000);
-
-    track.parentElement.addEventListener('mouseenter', () => clearInterval(autoPlay));
-    track.parentElement.addEventListener('mouseleave', () => {
-        autoPlay = setInterval(() => {
-            const cardsPerView = getCardsPerView();
-            const maxIndex = Math.max(0, totalCards - cardsPerView);
-            currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
-            updateCarousel();
-        }, 5000);
-    });
 }
 
 /* ============================================
@@ -384,7 +300,7 @@ function isValidEmail(email) {
    5. Paste the deployment URL below
    IMPORTANT: Do not commit your Apps Script URL to this public repository.
    ============================================ */
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwcpf7R_-DP1f3MT72T_A28LAJQdRjpCV9rO80jIqZSlRUizbp4zRbl2ZVwPWMArkQotA/exec'; // <-- Deployed Apps Script Web App URL
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzu7oJy4LnyvxdeJhSmDANxDMORM7Nz45gT3fLixviMP_EgXAu4Or468dH4S7JdISsXjw/exec'; // <-- Deployed Apps Script Web App URL
 
 function buildMailtoLink(formData) {
     const subject = encodeURIComponent(`Project inquiry from ${formData.name || 'Website visitor'}`);
@@ -481,6 +397,16 @@ function initContactForm() {
             const errorEl = input.parentElement.querySelector('.form-error');
             if (errorEl) errorEl.classList.remove('visible');
         });
+    });
+
+    // Handle Enter key on inputs in Step 1 and Step 2 to move to next step
+    form.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+            if (currentStep < 3) {
+                e.preventDefault();
+                goToStep(currentStep + 1);
+            }
+        }
     });
 
     // Remove service error on checkbox change
