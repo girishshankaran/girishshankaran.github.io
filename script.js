@@ -320,6 +320,23 @@ function buildMailtoLink(formData) {
     return `mailto:hello@zetashift.co?subject=${subject}&body=${encodeURIComponent(body)}`;
 }
 
+function readFileAsBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const result = reader.result || '';
+            const base64String = result.includes(',') ? result.split(',')[1] : result;
+            resolve({
+                name: file.name,
+                type: file.type || 'application/octet-stream',
+                data: base64String,
+            });
+        };
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
+
 function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
@@ -329,35 +346,52 @@ function initContactForm() {
 
         if (!validateStep(3)) return;
 
+        // Anti-spam Honeypot Check
+        const honeypot = document.getElementById('form-botcheck')?.value || '';
+        if (honeypot.trim() !== '') {
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.querySelector('.form-progress').style.display = 'none';
+            document.getElementById('form-success').classList.add('active');
+            return;
+        }
+
         const submitBtn = document.getElementById('contact-submit');
         const btnText = submitBtn.querySelector('span');
         const btnArrow = submitBtn.querySelector('.btn-arrow');
         const originalText = btnText.textContent;
 
-        // Collect all form data
-        const formData = {
-            timestamp: new Date().toISOString(),
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            company: document.getElementById('company').value,
-            services: Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value).join(', '),
-            budget: document.getElementById('budget').value,
-            timeline: document.getElementById('timeline').value,
-            projectTitle: document.getElementById('project-title').value,
-            message: document.getElementById('message').value,
-            referenceLink: document.getElementById('reference-link').value,
-        };
-
         // Show loading state
         submitBtn.disabled = true;
-        btnText.textContent = 'Submitting...';
+        btnText.textContent = uploadedFiles.length > 0 ? 'Uploading & Submitting...' : 'Submitting...';
         if (btnArrow) btnArrow.style.display = 'none';
         submitBtn.classList.add('btn-loading');
 
         try {
+            // Process any attached files
+            let attachments = [];
+            if (uploadedFiles && uploadedFiles.length > 0) {
+                attachments = await Promise.all(uploadedFiles.map(file => readFileAsBase64(file)));
+            }
+
+            // Collect all form data
+            const formData = {
+                timestamp: new Date().toISOString(),
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                company: document.getElementById('company').value,
+                services: Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value).join(', '),
+                budget: document.getElementById('budget').value,
+                timeline: document.getElementById('timeline').value,
+                projectTitle: document.getElementById('project-title').value,
+                message: document.getElementById('message').value,
+                referenceLink: document.getElementById('reference-link').value,
+                honeypot: honeypot,
+                attachments: attachments,
+            };
+
             if (GOOGLE_SHEETS_URL) {
-                // Send to Google Sheets
+                // Send to Google Sheets & Drive
                 await fetch(GOOGLE_SHEETS_URL, {
                     method: 'POST',
                     mode: 'no-cors',
