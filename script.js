@@ -166,111 +166,44 @@ function initCounterAnimation() {
 }
 
 /* ============================================
-   MULTI-STEP CONTACT FORM
+   CONTACT & INQUIRY FORM
    ============================================ */
-let currentStep = 1;
-
-function goToStep(step) {
-    // Validate current step before going forward
-    if (step > currentStep) {
-        if (!validateStep(currentStep)) return;
-    }
-
-    // Update step visibility
-    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-    const targetStep = document.getElementById(`form-step-${step}`);
-    if (targetStep) targetStep.classList.add('active');
-
-    // Update progress indicator
-    document.querySelectorAll('.progress-step').forEach(ps => {
-        const psStep = parseInt(ps.getAttribute('data-step'));
-        ps.classList.remove('active', 'completed');
-        if (psStep === step) {
-            ps.classList.add('active');
-        } else if (psStep < step) {
-            ps.classList.add('completed');
-        }
-    });
-
-    // Update progress lines
-    const line1 = document.getElementById('progress-line-1');
-    const line2 = document.getElementById('progress-line-2');
-    if (line1) line1.classList.toggle('filled', step >= 2);
-    if (line2) line2.classList.toggle('filled', step >= 3);
-
-    currentStep = step;
-
-    // Scroll form into view
-    document.querySelector('.contact-form-wrapper').scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest'
-    });
-}
-
-function validateStep(step) {
+function validateForm() {
     clearErrors();
+    let valid = true;
 
-    if (step === 1) {
-        let valid = true;
-        const name = document.getElementById('name');
-        const email = document.getElementById('email');
+    const name = document.getElementById('name');
+    const email = document.getElementById('email');
+    const inquiryType = document.getElementById('inquiry-type');
+    const subject = document.getElementById('subject');
+    const message = document.getElementById('message');
 
-        if (!name.value.trim()) {
-            showError('name', 'name-error');
-            valid = false;
-        }
-
-        if (!email.value.trim() || !isValidEmail(email.value)) {
-            showError('email', 'email-error');
-            valid = false;
-        }
-
-        return valid;
+    if (!name || !name.value.trim()) {
+        showError('name', 'name-error');
+        valid = false;
     }
 
-    if (step === 2) {
-        let valid = true;
-        const checkedServices = document.querySelectorAll('input[name="services"]:checked');
-        const budget = document.getElementById('budget');
-        const timeline = document.getElementById('timeline');
-
-        if (checkedServices.length === 0) {
-            document.getElementById('services-error').classList.add('visible');
-            valid = false;
-        }
-
-        if (!budget.value) {
-            showError('budget', 'budget-error');
-            valid = false;
-        }
-
-        if (!timeline.value) {
-            showError('timeline', 'timeline-error');
-            valid = false;
-        }
-
-        return valid;
+    if (!email || !email.value.trim() || !isValidEmail(email.value)) {
+        showError('email', 'email-error');
+        valid = false;
     }
 
-    if (step === 3) {
-        let valid = true;
-        const projectTitle = document.getElementById('project-title');
-        const message = document.getElementById('message');
-
-        if (!projectTitle.value.trim()) {
-            showError('project-title', 'project-title-error');
-            valid = false;
-        }
-
-        if (!message.value.trim()) {
-            showError('message', 'message-error');
-            valid = false;
-        }
-
-        return valid;
+    if (!inquiryType || !inquiryType.value) {
+        showError('inquiry-type', 'inquiry-type-error');
+        valid = false;
     }
 
-    return true;
+    if (!subject || !subject.value.trim()) {
+        showError('subject', 'subject-error');
+        valid = false;
+    }
+
+    if (!message || !message.value.trim()) {
+        showError('message', 'message-error');
+        valid = false;
+    }
+
+    return valid;
 }
 
 function showError(inputId, errorId) {
@@ -291,28 +224,16 @@ function isValidEmail(email) {
 
 /* ============================================
    GOOGLE SHEETS CONFIGURATION
-   ============================================
-   To connect to Google Sheets:
-   1. Create a Google Sheet
-   2. Go to Extensions > Apps Script
-   3. Paste the Apps Script code (see google-apps-script.js in project root)
-   4. Deploy as Web App (Execute as: Me, Access: Anyone)
-   5. Paste the deployment URL below
-   IMPORTANT: Do not commit your Apps Script URL to this public repository.
    ============================================ */
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycby639D3TK6EZdLglgj_ZprRquPsOSxfsgWRR2q5csoIm8oOV2s4dVSpb-Ro-WeG066mmQ/exec'; // <-- Deployed Apps Script Web App URL
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycby639D3TK6EZdLglgj_ZprRquPsOSxfsgWRR2q5csoIm8oOV2s4dVSpb-Ro-WeG066mmQ/exec';
 
 function buildMailtoLink(formData) {
-    const subject = encodeURIComponent(`Project inquiry from ${formData.name || 'Website visitor'}`);
+    const subject = encodeURIComponent(`[${formData.inquiryType || 'Inquiry'}] ${formData.subject || 'Website Message'}`);
     const body = [
         `Name: ${formData.name || ''}`,
         `Email: ${formData.email || ''}`,
-        `Phone: ${formData.phone || ''}`,
-        `Company: ${formData.company || ''}`,
-        `Services: ${formData.services || ''}`,
-        `Budget: ${formData.budget || ''}`,
-        `Timeline: ${formData.timeline || ''}`,
-        `Project Title: ${formData.projectTitle || ''}`,
+        `Inquiry Type: ${formData.inquiryType || ''}`,
+        `Subject: ${formData.subject || ''}`,
         `Message: ${formData.message || ''}`,
         `Reference Link: ${formData.referenceLink || ''}`,
     ].join('\n');
@@ -344,13 +265,11 @@ function initContactForm() {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        if (!validateStep(3)) return;
+        if (!validateForm()) return;
 
         // Anti-spam Honeypot Check
         const honeypot = document.getElementById('form-botcheck')?.value || '';
         if (honeypot.trim() !== '') {
-            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-            document.querySelector('.form-progress').style.display = 'none';
             document.getElementById('form-success').classList.add('active');
             return;
         }
@@ -362,7 +281,7 @@ function initContactForm() {
 
         // Show loading state
         submitBtn.disabled = true;
-        btnText.textContent = uploadedFiles.length > 0 ? 'Uploading & Submitting...' : 'Submitting...';
+        btnText.textContent = uploadedFiles.length > 0 ? 'Uploading & Sending...' : 'Sending...';
         if (btnArrow) btnArrow.style.display = 'none';
         submitBtn.classList.add('btn-loading');
 
@@ -378,14 +297,16 @@ function initContactForm() {
                 timestamp: new Date().toISOString(),
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                company: document.getElementById('company').value,
-                services: Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value).join(', '),
-                budget: document.getElementById('budget').value,
-                timeline: document.getElementById('timeline').value,
-                projectTitle: document.getElementById('project-title').value,
+                services: document.getElementById('inquiry-type').value, // Maps to services/type in sheet
+                inquiryType: document.getElementById('inquiry-type').value,
+                projectTitle: document.getElementById('subject').value, // Maps to projectTitle/subject in sheet
+                subject: document.getElementById('subject').value,
                 message: document.getElementById('message').value,
-                referenceLink: document.getElementById('reference-link').value,
+                referenceLink: document.getElementById('reference-link')?.value || '',
+                phone: '',
+                company: '',
+                budget: '',
+                timeline: '',
                 honeypot: honeypot,
                 attachments: attachments,
             };
@@ -408,13 +329,11 @@ function initContactForm() {
             }
 
             // Show success state
-            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-            document.querySelector('.form-progress').style.display = 'none';
             document.getElementById('form-success').classList.add('active');
 
         } catch (error) {
             console.error('❌ Submission error:', error);
-            showToast('Something went wrong. Please try again or email us directly.', 'error');
+            showToast('Something went wrong. Please try again or email us directly at hello@zetashift.co', 'error');
         } finally {
             // Reset button state
             submitBtn.disabled = false;
@@ -428,54 +347,17 @@ function initContactForm() {
     form.querySelectorAll('.form-input').forEach(input => {
         input.addEventListener('input', () => {
             input.classList.remove('error');
-            const errorEl = input.parentElement.querySelector('.form-error');
+            const errorEl = input.parentElement.querySelector('.form-error') || 
+                            document.getElementById(`${input.id}-error`);
+            if (errorEl) errorEl.classList.remove('visible');
+        });
+        input.addEventListener('change', () => {
+            input.classList.remove('error');
+            const errorEl = input.parentElement.querySelector('.form-error') || 
+                            document.getElementById(`${input.id}-error`);
             if (errorEl) errorEl.classList.remove('visible');
         });
     });
-
-    // Handle Enter key on inputs in Step 1 and Step 2 to move to next step
-    form.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-            if (currentStep < 3) {
-                e.preventDefault();
-                goToStep(currentStep + 1);
-            }
-        }
-    });
-
-    // Remove service error on checkbox change
-    document.querySelectorAll('input[name="services"]').forEach(cb => {
-        cb.addEventListener('change', () => {
-            const servicesError = document.getElementById('services-error');
-            if (servicesError) servicesError.classList.remove('visible');
-        });
-    });
-}
-
-/* ============================================
-   TOAST NOTIFICATION
-   ============================================ */
-function showToast(message, type = 'info') {
-    // Remove existing toast
-    const existing = document.querySelector('.toast');
-    if (existing) existing.remove();
-
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.innerHTML = `
-        <span class="toast-message">${message}</span>
-        <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
-    `;
-    document.body.appendChild(toast);
-
-    // Trigger animation
-    requestAnimationFrame(() => toast.classList.add('toast-visible'));
-
-    // Auto-remove after 6 seconds
-    setTimeout(() => {
-        toast.classList.remove('toast-visible');
-        setTimeout(() => toast.remove(), 300);
-    }, 6000);
 }
 
 function resetForm() {
@@ -491,11 +373,7 @@ function resetForm() {
     const charCount = document.getElementById('char-count');
     if (charCount) charCount.textContent = '0';
 
-    // Reset to step 1
-    document.querySelector('.form-progress').style.display = 'flex';
     document.getElementById('form-success').classList.remove('active');
-    currentStep = 1;
-    goToStep(1);
     clearErrors();
 }
 

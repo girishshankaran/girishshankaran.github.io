@@ -151,6 +151,27 @@ textarea {
     margin-bottom: 20px;
 }
 
+.badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: rgba(123, 97, 255, 0.15);
+    border: 1px solid rgba(123, 97, 255, 0.4);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.badge-pill--secondary {
+    background: rgba(0, 212, 255, 0.12);
+    border-color: rgba(0, 212, 255, 0.35);
+    color: var(--accent-secondary);
+}
+
 .section-title {
     font-family: var(--font-heading);
     font-size: clamp(2rem, 4vw, 3rem);
