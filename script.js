@@ -238,7 +238,7 @@ function buildMailtoLink(formData) {
         `Reference Link: ${formData.referenceLink || ''}`,
     ].join('\n');
 
-    return `mailto:hello@zetashift.co?subject=${subject}&body=${encodeURIComponent(body)}`;
+    return `mailto:snapsolve.edupp@gmail.com?subject=${subject}&body=${encodeURIComponent(body)}`;
 }
 
 function readFileAsBase64(file) {
@@ -333,7 +333,7 @@ function initContactForm() {
 
         } catch (error) {
             console.error('❌ Submission error:', error);
-            showToast('Something went wrong. Please try again or email us directly at hello@zetashift.co', 'error');
+            showToast('Something went wrong. Please try again or email us directly at snapsolve.edupp@gmail.com', 'error');
         } finally {
             // Reset button state
             submitBtn.disabled = false;
