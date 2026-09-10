@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCharCounter();
     initSmoothScrolling();
     initTypingEffect();
+    initAnalyticsEvents();
 });
 
 /* ============================================
@@ -331,6 +332,15 @@ function initContactForm() {
             // Show success state
             document.getElementById('form-success').classList.add('active');
 
+            // Log event in Google Analytics
+            if (typeof gtag === 'function') {
+                gtag('event', 'generate_lead', {
+                    event_category: 'Contact',
+                    event_label: formData.inquiryType || 'General Inquiry',
+                    inquiry_type: formData.inquiryType || 'General'
+                });
+            }
+
         } catch (error) {
             console.error('❌ Submission error:', error);
             showToast('Something went wrong. Please try again or email us directly at support@zetashiftlabs.com', 'error');
@@ -522,4 +532,36 @@ function initTypingEffect() {
     }, { threshold: 0.3 });
 
     observer.observe(codeBlock);
+}
+
+/* ============================================
+   GOOGLE ANALYTICS EVENT TRACKING
+   ============================================ */
+function initAnalyticsEvents() {
+    // Track Google Play downloads
+    document.querySelectorAll('a[href*="play.google.com"]').forEach(link => {
+        link.addEventListener('click', () => {
+            if (typeof gtag === 'function') {
+                gtag('event', 'app_download_click', {
+                    event_category: 'Engagement',
+                    event_label: 'SolveCraft - Google Play',
+                    app_name: 'SolveCraft',
+                    platform: 'Android'
+                });
+            }
+        });
+    });
+
+    // Track direct email clicks
+    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+        link.addEventListener('click', () => {
+            if (typeof gtag === 'function') {
+                gtag('event', 'contact_click', {
+                    event_category: 'Engagement',
+                    event_label: link.getAttribute('href'),
+                    method: 'Email'
+                });
+            }
+        });
+    });
 }
