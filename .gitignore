@@ -11,3 +11,7 @@ node_modules/
 
 # Misc
 *.log
+
+# Exclude local photos
+onam_group_complete.jpg
+*onam*
