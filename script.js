@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTypingEffect();
     initAnalyticsEvents();
     initPlayStoreDirectLauncher();
+    initSolveCraftQR();
 });
 
 /* ============================================
@@ -613,3 +614,62 @@ function initPlayStoreDirectLauncher() {
         });
     });
 }
+
+/* ============================================
+   SOLVECRAFT QR SCAN CODE INTERACTION
+   ============================================ */
+function initSolveCraftQR() {
+    const toggleBtn = document.getElementById('qr-toggle-btn');
+    const popover = document.getElementById('solvecraft-qr-popover');
+    const closeBtn = document.getElementById('qr-close-btn');
+
+    if (!toggleBtn || !popover) return;
+
+    function openQR() {
+        popover.classList.add('active');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+
+        if (typeof gtag === 'function') {
+            gtag('event', 'qr_code_view', {
+                event_category: 'Engagement',
+                event_label: 'SolveCraft QR Code Scan'
+            });
+        }
+    }
+
+    function closeQR() {
+        popover.classList.remove('active');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (popover.classList.contains('active')) {
+            closeQR();
+        } else {
+            openQR();
+        }
+    });
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeQR();
+        });
+    }
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!popover.contains(e.target) && !toggleBtn.contains(e.target)) {
+            closeQR();
+        }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && popover.classList.contains('active')) {
+            closeQR();
+        }
+    });
+}
+

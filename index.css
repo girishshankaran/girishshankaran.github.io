@@ -838,6 +838,143 @@ textarea {
     font-weight: 500;
 }
 
+/* SolveCraft Action Buttons & QR Scan Code Popover */
+.solvecraft-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    position: relative;
+}
+
+.qr-code-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.qr-trigger-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.qr-trigger-btn:hover {
+    border-color: var(--accent-primary);
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.2);
+}
+
+.qr-code-popover {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0b0f19;
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    border-radius: 16px;
+    padding: 16px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(99, 102, 241, 0.25);
+    z-index: 100;
+    backdrop-filter: blur(16px);
+}
+
+.qr-code-popover::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color: #0b0f19 transparent transparent transparent;
+}
+
+.qr-code-popover.active {
+    display: block;
+    animation: qrPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes qrPopIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 8px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+}
+
+.qr-popover-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.qr-popover-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.2px;
+}
+
+.qr-popover-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+    border-radius: 4px;
+    transition: color 0.15s ease;
+}
+
+.qr-popover-close:hover {
+    color: var(--accent-primary);
+}
+
+.qr-img-frame {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px;
+}
+
+.qr-img-frame img {
+    width: 140px;
+    height: 140px;
+    display: block;
+    image-rendering: pixelated;
+}
+
+.qr-popover-desc {
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin: 0;
+}
+
 /* ============================================
    ABOUT SECTION
    ============================================ */

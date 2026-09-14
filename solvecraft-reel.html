@@ -626,7 +626,46 @@
             color: #38bdf8;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+        }
+
+        .cta-qr-container {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+        }
+
+        .cta-qr-container img {
+            width: 68px;
+            height: 68px;
+            border-radius: 8px;
+            background: #ffffff;
+            padding: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .cta-qr-text {
+            text-align: left;
+        }
+
+        .cta-qr-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+        }
+
+        .cta-qr-sub {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 2px;
         }
 
         .google-play-badge-btn {
@@ -930,6 +969,15 @@
 
                 <h2 class="cta-app-title">SolveCraft</h2>
                 <div class="cta-app-tagline">Learn &bull; Solve &bull; Master STEM</div>
+
+                <!-- QR Scan Code Card -->
+                <div class="cta-qr-container">
+                    <img src="solvecraft-qr.png" alt="Scan to install SolveCraft on Android">
+                    <div class="cta-qr-text">
+                        <div class="cta-qr-title">Scan to Install</div>
+                        <div class="cta-qr-sub">Instant Google Play link</div>
+                    </div>
+                </div>
 
                 <a href="https://play.google.com/store/apps/details?id=com.girishks.snapsolve" 
                    data-package="com.girishks.snapsolve" target="_blank" class="google-play-badge-btn" id="cta-btn">
