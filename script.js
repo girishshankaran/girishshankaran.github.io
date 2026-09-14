@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothScrolling();
     initTypingEffect();
     initAnalyticsEvents();
+    initPlayStoreDirectLauncher();
 });
 
 /* ============================================
@@ -561,6 +562,53 @@ function initAnalyticsEvents() {
                     event_label: link.getAttribute('href'),
                     method: 'Email'
                 });
+            }
+        });
+    });
+}
+
+/* ============================================
+   GOOGLE PLAY NATIVE DIRECT APP LAUNCHER
+   Launches native Play Store app on Android (market://)
+   with fallback to web store for desktop/iOS
+   ============================================ */
+function initPlayStoreDirectLauncher() {
+    const playLinks = document.querySelectorAll('a[href*="play.google.com"], [data-package]');
+    const isAndroid = /android/i.test(navigator.userAgent);
+
+    playLinks.forEach(link => {
+        const pkg = link.getAttribute('data-package') || 'com.girishks.snapsolve';
+        const webUrl = `https://play.google.com/store/apps/details?id=${pkg}`;
+        const marketUrl = `market://details?id=${pkg}`;
+
+        if (isAndroid) {
+            // Update href directly to market:// for instant native Play Store app launch
+            link.setAttribute('href', marketUrl);
+        }
+
+        link.addEventListener('click', (e) => {
+            // Log in GA4
+            if (typeof gtag === 'function') {
+                gtag('event', 'app_download_click', {
+                    event_category: 'Engagement',
+                    event_label: 'SolveCraft - Google Play Direct',
+                    app_name: 'SolveCraft',
+                    platform: isAndroid ? 'Android-Native' : 'Web'
+                });
+            }
+
+            if (isAndroid) {
+                e.preventDefault();
+                const start = Date.now();
+                // Attempt direct native Play Store app launch
+                window.location.href = marketUrl;
+
+                // Fallback to web link if market:// handler is not installed
+                setTimeout(() => {
+                    if (Date.now() - start < 1800) {
+                        window.location.href = webUrl;
+                    }
+                }, 1000);
             }
         });
     });
