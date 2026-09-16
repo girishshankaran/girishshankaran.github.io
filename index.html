@@ -35,7 +35,11 @@
     <meta name="twitter:image" content="https://zetashiftlabs.com/zetashift-logo.jpg">
     <link rel="canonical" href="https://zetashiftlabs.com/">
     <title>ZetaShift Labs — EduTech Product Studio & Learning Apps</title>
-    <link rel="icon" type="image/jpeg" href="zetashift-logo.jpg">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -47,20 +51,65 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "ZetaShift Labs",
-      "url": "https://zetashiftlabs.com/",
-      "logo": "https://zetashiftlabs.com/zetashift-logo.jpg",
-      "image": "https://zetashiftlabs.com/zetashift-logo.jpg",
-      "description": "EduTech product studio designing and building next-generation learning applications and educational tools.",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "email": "support@zetashiftlabs.com",
-        "contactType": "customer service"
-      },
-      "sameAs": [
-        "https://www.linkedin.com/company/zetashift-labs/",
-        "https://github.com/ZetaShift-Labs"
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://zetashiftlabs.com/#website",
+          "url": "https://zetashiftlabs.com/",
+          "name": "ZetaShift Labs",
+          "alternateName": [
+            "zetashiftlabs",
+            "ZetaShift",
+            "ZetaShiftLabs",
+            "ZetaShift Labs Studio"
+          ],
+          "description": "EduTech product studio designing and engineering next-generation learning apps, problem-solving tools, and interactive educational platforms.",
+          "inLanguage": "en"
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://zetashiftlabs.com/#organization",
+          "name": "ZetaShift Labs",
+          "alternateName": "zetashiftlabs",
+          "url": "https://zetashiftlabs.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://zetashiftlabs.com/favicon-192x192.png",
+            "width": 192,
+            "height": 192
+          },
+          "image": "https://zetashiftlabs.com/zetashift-logo.jpg",
+          "description": "EduTech product studio designing and building next-generation learning applications and educational tools.",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "support@zetashiftlabs.com",
+            "contactType": "customer service"
+          },
+          "sameAs": [
+            "https://www.linkedin.com/company/zetashift-labs/",
+            "https://github.com/ZetaShift-Labs"
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://zetashiftlabs.com/#solvecraft",
+          "name": "SolveCraft — Learn & Solve",
+          "operatingSystem": "Android",
+          "applicationCategory": "EducationalApplication",
+          "installUrl": "https://play.google.com/store/apps/details?id=com.girishks.snapsolve",
+          "author": {
+            "@id": "https://zetashiftlabs.com/#organization"
+          },
+          "publisher": {
+            "@id": "https://zetashiftlabs.com/#organization"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "INR"
+          },
+          "description": "Educational mobile application engineered to help students practice problem-solving, test mastery, and learn through focused step-by-step learning modules."
+        }
       ]
     }
     </script>
@@ -649,6 +698,7 @@
                         <li><a href="https://play.google.com/store/apps/details?id=com.girishks.snapsolve" data-package="com.girishks.snapsolve" target="_blank" rel="noopener noreferrer">SolveCraft (Android)</a></li>
                         <li><a href="privacy-policy.html" target="_blank">Privacy Policy</a></li>
                         <li><a href="terms-of-service.html" target="_blank">Terms of Service</a></li>
+                        <li><a href="delete-account.html" target="_blank">Delete Account</a></li>
                     </ul>
                 </div>
                 <div class="footer-links-group">

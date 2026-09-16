@@ -8,6 +8,7 @@ Thumbs.db
 
 # Dependencies
 node_modules/
+.venv/
 
 # Misc
 *.log

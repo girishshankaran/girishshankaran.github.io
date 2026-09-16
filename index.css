@@ -914,6 +914,7 @@ textarea {
         opacity: 0;
         transform: translate(-50%, 8px) scale(0.95);
     }
+
     100% {
         opacity: 1;
         transform: translate(-50%, 0) scale(1);
