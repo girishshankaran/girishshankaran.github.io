@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Follow ZetaShift Labs on X/Twitter for EduTech updates, launches, learning insights, and product announcements.">
+    <meta name="theme-color" content="#0a0a1a">
+    <title>ZetaShift Labs | X / Twitter</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a1a;
+            --bg-secondary: #0f0f2a;
+            --bg-card: rgba(20, 20, 50, 0.7);
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0c0;
+            --text-muted: #8e8eb4;
+            --accent-primary: #7b61ff;
+            --accent-secondary: #00d4ff;
+            --accent-tertiary: #ff6b9d;
+            --border-color: rgba(123, 97, 255, 0.18);
+            --gradient-primary: linear-gradient(135deg, #7b61ff 0%, #00d4ff 100%);
+            --gradient-secondary: linear-gradient(135deg, #ff6b9d 0%, #7b61ff 100%);
+            --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.35);
+            --shadow-glow: 0 0 40px rgba(123, 97, 255, 0.2);
+            --radius-lg: 20px;
+            --radius-full: 999px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(123, 97, 255, 0.18), transparent 32%),
+                radial-gradient(circle at bottom right, rgba(0, 212, 255, 0.14), transparent 28%),
+                var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            backdrop-filter: blur(14px);
+            background: rgba(10, 10, 26, 0.72);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .topbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 74px;
+            gap: 16px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+
+        .brand img {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+        }
+
+        .brand-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+        }
+
+        .brand-name .accent {
+            color: var(--accent-secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 22px;
+            border-radius: var(--radius-full);
+            background: var(--gradient-primary);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: var(--shadow-glow);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 44px rgba(123, 97, 255, 0.4);
+        }
+
+        .page-shell {
+            min-height: calc(100vh - 74px);
+            display: grid;
+            place-items: center;
+            padding: 64px 0 88px;
+        }
+
+        .card {
+            position: relative;
+            width: min(100%, 880px);
+            background: rgba(18, 18, 42, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(123, 97, 255, 0.12), rgba(0, 212, 255, 0.08), transparent 60%);
+            pointer-events: none;
+        }
+
+        .card-inner {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 28px;
+            padding: 44px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 14px;
+            border-radius: var(--radius-full);
+            background: rgba(123, 97, 255, 0.12);
+            border: 1px solid rgba(123, 97, 255, 0.3);
+            color: var(--accent-secondary);
+            letter-spacing: 0.12em;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--accent-secondary);
+            box-shadow: 0 0 14px rgba(0, 212, 255, 0.8);
+        }
+
+        h1 {
+            margin: 18px 0 18px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            line-height: 1.05;
+            letter-spacing: -0.06em;
+        }
+
+        .headline-gradient {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro {
+            max-width: 600px;
+            color: var(--text-secondary);
+            font-size: 1.08rem;
+            margin-bottom: 28px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full);
+            padding: 12px 20px;
+            color: var(--text-primary);
+            border: 1px solid rgba(123, 97, 255, 0.3);
+            background: rgba(255, 255, 255, 0.02);
+            font-weight: 600;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .meta-box {
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+        }
+
+        .meta-value {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .meta-label {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .profile-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 28px;
+            background: linear-gradient(180deg, rgba(123, 97, 255, 0.16), rgba(12,12,30,0.5));
+            border: 1px solid rgba(123, 97, 255, 0.2);
+            border-radius: 24px;
+            min-height: 100%;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: grid;
+            place-items: center;
+            box-shadow: var(--shadow-glow);
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 18px;
+        }
+
+        .handle {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            margin: 0;
+        }
+
+        .handle-tag {
+            color: var(--text-secondary);
+            margin-top: 6px;
+            margin-bottom: 10px;
+        }
+
+        .bio {
+            text-align: center;
+            color: var(--text-secondary);
+            margin: 0 0 18px;
+            max-width: 260px;
+        }
+
+        .mini-stats {
+            display: flex;
+            gap: 22px;
+            justify-content: center;
+            flex-wrap: wrap;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        .mini-stats strong {
+            color: var(--text-primary);
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 24px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 820px) {
+            .topbar-inner {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 18px 0;
+            }
+
+            .card-inner {
+                grid-template-columns: 1fr;
+                padding: 28px 20px;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <a href="https://zetashiftlabs.com/" class="brand" aria-label="ZetaShift Labs home">
+                <img src="zetashift-logo.jpg" alt="ZetaShift Labs Logo">
+                <span class="brand-name">ZetaShift <span class="accent">Labs</span></span>
+            </a>
+            <nav class="nav-links" aria-label="Main navigation">
+                <a href="https://zetashiftlabs.com/">Home</a>
+                <a href="https://zetashiftlabs.com/#products">Products</a>
+                <a href="https://zetashiftlabs.com/#technology">Technology</a>
+                <a href="https://zetashiftlabs.com/#about">Mission</a>
+                <a href="https://zetashiftlabs.com/#contact">Contact</a>
+            </nav>
+            <a class="cta" href="https://x.com/zetashiftlabs" target="_blank" rel="noopener noreferrer">Follow on X</a>
+        </div>
+    </header>
+
+    <main class="page-shell">
+        <div class="container">
+            <section class="card" aria-labelledby="twitter-page-title">
+                <div class="card-inner">
+                    <div>
+                        <span class="eyebrow">Social updates</span>
+                        <h1 id="twitter-page-title">Follow our journey on <span class="headline-gradient">X / Twitter</span></h1>
+                        <p class="intro">
+                            We share product launches, learning insights, EduTech experiments, student stories, and behind-the-scenes updates from the studio.
+                        </p>
+                        <div class="actions">
+                            <a class="cta" href="https://x.com/zetashiftlabs" target="_blank" rel="noopener noreferrer">Follow @zetashiftlabs</a>
+                            <a class="secondary" href="https://zetashiftlabs.com/">Back to website</a>
+                        </div>
+
+                        <div class="meta-grid" aria-label="Platform highlights">
+                            <div class="meta-box">
+                                <span class="meta-value">Weekly</span>
+                                <span class="meta-label">Product updates</span>
+                            </div>
+                            <div class="meta-box">
+                                <span class="meta-value">AI</span>
+                                <span class="meta-label">Learning insights</span>
+                            </div>
+                            <div class="meta-box">
+                                <span class="meta-value">Global</span>
+                                <span class="meta-label">Student-first thinking</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="profile-panel" aria-label="ZetaShift Labs X profile preview">
+                        <div class="avatar" aria-hidden="true">Z</div>
+                        <h2 class="handle">@zetashiftlabs</h2>
+                        <div class="handle-tag">ZetaShift Labs</div>
+                        <p class="bio">Independent EduTech product studio building smarter learning tools and digital experiences for modern learners.</p>
+                        <div class="mini-stats" aria-label="Profile statistics">
+                            <span><strong>1.2K+</strong> followers</span>
+                            <span><strong>180+</strong> posts</span>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+            <p class="footer-note">Connect with us on X for launch updates, product ideas, and learner-first engineering stories.</p>
+        </div>
+    </main>
+</body>
+</html>
