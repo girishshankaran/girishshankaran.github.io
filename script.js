@@ -359,14 +359,14 @@ function initContactForm() {
     form.querySelectorAll('.form-input').forEach(input => {
         input.addEventListener('input', () => {
             input.classList.remove('error');
-            const errorEl = input.parentElement.querySelector('.form-error') || 
-                            document.getElementById(`${input.id}-error`);
+            const errorEl = input.parentElement.querySelector('.form-error') ||
+                document.getElementById(`${input.id}-error`);
             if (errorEl) errorEl.classList.remove('visible');
         });
         input.addEventListener('change', () => {
             input.classList.remove('error');
-            const errorEl = input.parentElement.querySelector('.form-error') || 
-                            document.getElementById(`${input.id}-error`);
+            const errorEl = input.parentElement.querySelector('.form-error') ||
+                document.getElementById(`${input.id}-error`);
             if (errorEl) errorEl.classList.remove('visible');
         });
     });
