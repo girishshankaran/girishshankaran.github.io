@@ -838,6 +838,12 @@ textarea {
     font-weight: 500;
 }
 
+.partner-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+}
+
 /* SolveCraft Action Buttons & QR Scan Code Popover */
 .solvecraft-actions {
     display: flex;
