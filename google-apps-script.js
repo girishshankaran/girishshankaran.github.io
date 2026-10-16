@@ -9,7 +9,7 @@
  * 1. Go to https://sheets.google.com and open your spreadsheet
  *    "ZetaShift Labs - Form Submissions"
  * 
- * 2. Ensure Row 1 has headers in columns A through L:
+ * 2. Ensure Row 1 has headers in columns A through O:
  *    A: Timestamp
  *    B: Name
  *    C: Email
@@ -22,6 +22,9 @@
  *    J: Message
  *    K: Reference Link
  *    L: Attachments
+ *    M: Time on Site
+ *    N: Referrer
+ *    O: Device
  * 
  * 3. Go to Extensions > Apps Script
  * 4. Replace the code with ALL the code below
@@ -87,7 +90,10 @@ function doPost(e) {
       data.projectTitle || '',
       data.message || '',
       data.referenceLink || '',
-      fileUrls.join('\n')
+      fileUrls.join('\n'),
+      data.timeOnSite || 'N/A',
+      data.referrer || 'Direct',
+      data.device || 'N/A'
     ]);
 
     // 4. Send Instant Email Alert to Admin
@@ -108,6 +114,9 @@ function doPost(e) {
             <tr><td style="padding: 8px 0; font-weight: bold;">Timeline:</td><td>${data.timeline || 'N/A'}</td></tr>
             <tr><td style="padding: 8px 0; font-weight: bold;">Project Title:</td><td>${data.projectTitle || 'N/A'}</td></tr>
             <tr><td style="padding: 8px 0; font-weight: bold;">Reference Link:</td><td>${data.referenceLink ? `<a href="${data.referenceLink}">${data.referenceLink}</a>` : 'None'}</td></tr>
+            <tr><td style="padding: 8px 0; font-weight: bold;">Time on Site:</td><td>${data.timeOnSite || 'N/A'}</td></tr>
+            <tr><td style="padding: 8px 0; font-weight: bold;">Referrer Source:</td><td>${data.referrer || 'Direct'}</td></tr>
+            <tr><td style="padding: 8px 0; font-weight: bold;">Device / Screen:</td><td>${data.device || 'N/A'}</td></tr>
             ${fileUrls.length > 0 ? `<tr><td style="padding: 8px 0; font-weight: bold;">Attachments:</td><td>${fileUrls.map((u, i) => `<a href="${u}">Attachment ${i+1}</a>`).join(', ')}</td></tr>` : ''}
           </table>
           <div style="margin-top: 20px; padding: 15px; background: #f9f9fc; border-left: 4px solid #7b61ff; border-radius: 4px;">

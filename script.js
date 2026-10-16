@@ -3,6 +3,9 @@
    Navigation, Animations, Forms, Particles
    ============================================ */
 
+// Track session visit start time for duration analytics
+const SITE_VISIT_START = Date.now();
+
 document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     initParticles();
@@ -295,6 +298,14 @@ function initContactForm() {
                 attachments = await Promise.all(uploadedFiles.map(file => readFileAsBase64(file)));
             }
 
+            // Calculate visitor duration & analytics context
+            const elapsedSeconds = Math.round((Date.now() - SITE_VISIT_START) / 1000);
+            const dwellMinutes = Math.floor(elapsedSeconds / 60);
+            const dwellSecs = elapsedSeconds % 60;
+            const timeOnSiteFormatted = dwellMinutes > 0 ? `${dwellMinutes}m ${dwellSecs}s` : `${dwellSecs}s`;
+            const referrerInfo = document.referrer || 'Direct visit';
+            const screenInfo = `${window.innerWidth}x${window.innerHeight}`;
+
             // Collect all form data
             const formData = {
                 timestamp: new Date().toISOString(),
@@ -310,6 +321,9 @@ function initContactForm() {
                 company: '',
                 budget: '',
                 timeline: '',
+                timeOnSite: timeOnSiteFormatted,
+                referrer: referrerInfo,
+                device: screenInfo,
                 honeypot: honeypot,
                 attachments: attachments,
             };
@@ -341,6 +355,15 @@ function initContactForm() {
                     event_label: formData.inquiryType || 'General Inquiry',
                     inquiry_type: formData.inquiryType || 'General'
                 });
+            }
+
+            // Identify and link visitor session in Microsoft Clarity recordings
+            if (typeof clarity === 'function') {
+                clarity('identify', formData.email, undefined, undefined, formData.name);
+                clarity('set', 'name', formData.name);
+                clarity('set', 'inquiry_type', formData.inquiryType || 'General');
+                clarity('set', 'time_on_site', timeOnSiteFormatted);
+                clarity('event', 'lead_form_submitted');
             }
 
         } catch (error) {
@@ -551,6 +574,9 @@ function initAnalyticsEvents() {
                     platform: 'Android'
                 });
             }
+            if (typeof clarity === 'function') {
+                clarity('event', 'app_download_click');
+            }
         });
     });
 
@@ -563,6 +589,9 @@ function initAnalyticsEvents() {
                     event_label: link.getAttribute('href'),
                     method: 'Email'
                 });
+            }
+            if (typeof clarity === 'function') {
+                clarity('event', 'contact_email_click');
             }
         });
     });
@@ -634,6 +663,9 @@ function initSolveCraftQR() {
                 event_category: 'Engagement',
                 event_label: 'SolveCraft QR Code Scan'
             });
+        }
+        if (typeof clarity === 'function') {
+            clarity('event', 'qr_code_view');
         }
     }
 
