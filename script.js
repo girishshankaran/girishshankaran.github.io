@@ -264,6 +264,68 @@ function readFileAsBase64(file) {
     });
 }
 
+/**
+ * POSTs the payload and only resolves if the server explicitly reports success.
+ * Sent as text/plain so the browser treats it as a "simple" request (no CORS preflight)
+ * while still letting us read the JSON response.
+ */
+async function submitToEndpoint(payload) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 45000);
+    try {
+        const res = await fetch(GOOGLE_SHEETS_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload),
+            signal: controller.signal,
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        let result;
+        try {
+            result = await res.json();
+        } catch (_) {
+            throw new Error('Unreadable server response');
+        }
+
+        if (result.status !== 'success') {
+            const err = new Error(result.message || 'Submission rejected');
+            // Only surface server messages that are meant for visitors
+            if (result.status === 'invalid' || result.status === 'rate_limited') {
+                err.userMessage = result.message;
+            }
+            throw err;
+        }
+        return result;
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.setAttribute('role', 'alert');
+    toast.textContent = message;
+    Object.assign(toast.style, {
+        position: 'fixed',
+        left: '50%',
+        bottom: '24px',
+        transform: 'translateX(-50%)',
+        maxWidth: 'min(92vw, 480px)',
+        padding: '14px 18px',
+        borderRadius: '12px',
+        background: type === 'error' ? '#7f1d1d' : '#1e293b',
+        color: '#fff',
+        fontSize: '14px',
+        lineHeight: '1.5',
+        boxShadow: '0 12px 32px rgba(0,0,0,0.4)',
+        zIndex: '9999',
+    });
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 8000);
+}
+
 function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
@@ -329,15 +391,8 @@ function initContactForm() {
             };
 
             if (GOOGLE_SHEETS_URL) {
-                // Send to Google Sheets & Drive
-                await fetch(GOOGLE_SHEETS_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(formData),
-                });
-
-                console.log('✅ Form data sent to Google Sheets');
+                // Send to Google Sheets & Drive; throws unless the server confirms success
+                await submitToEndpoint(formData);
             } else {
                 console.log('📧 Form submission data (Google Sheets URL not configured):', formData);
                 const mailtoLink = buildMailtoLink(formData);
@@ -357,10 +412,9 @@ function initContactForm() {
                 });
             }
 
-            // Identify and link visitor session in Microsoft Clarity recordings
+            // Tag Clarity recordings with non-identifying context (privacy: no name/email sent)
             if (typeof clarity === 'function') {
-                clarity('identify', formData.email, undefined, undefined, formData.name);
-                clarity('set', 'name', formData.name);
+                // No name/email is sent to Clarity (privacy): only non-identifying tags
                 clarity('set', 'inquiry_type', formData.inquiryType || 'General');
                 clarity('set', 'time_on_site', timeOnSiteFormatted);
                 clarity('event', 'lead_form_submitted');
@@ -368,7 +422,7 @@ function initContactForm() {
 
         } catch (error) {
             console.error('❌ Submission error:', error);
-            showToast('Something went wrong. Please try again or email us directly at support@zetashiftlabs.com', 'error');
+            showToast(error.userMessage || 'We couldn’t send your message. Please try again, or email us directly at support@zetashiftlabs.com', 'error');
         } finally {
             // Reset button state
             submitBtn.disabled = false;
@@ -446,16 +500,24 @@ function initFileUpload() {
     // File input change
     fileInput.addEventListener('change', (e) => {
         handleFiles(e.target.files);
+        // Reset so selecting the same file again after removing it still fires 'change'
+        fileInput.value = '';
     });
 }
 
 function handleFiles(files) {
     const fileList = document.getElementById('file-list');
-    const maxSize = 10 * 1024 * 1024; // 10MB
+    const maxSize = 5 * 1024 * 1024; // 5MB per file (must match the server limit)
+    const maxFiles = 3;
 
     Array.from(files).forEach(file => {
+        if (uploadedFiles.length >= maxFiles) {
+            showToast(`You can attach up to ${maxFiles} files.`, 'error');
+            return;
+        }
+
         if (file.size > maxSize) {
-            alert(`"${file.name}" exceeds the 10MB limit.`);
+            showToast(`"${file.name}" exceeds the 5MB limit.`, 'error');
             return;
         }
 
@@ -469,13 +531,28 @@ function handleFiles(files) {
 function renderFileItem(file, container) {
     const item = document.createElement('div');
     item.className = 'file-item';
-    item.innerHTML = `
-        <div class="file-item-info">
-            <span class="file-item-name">${file.name}</span>
-            <span class="file-item-size">${formatFileSize(file.size)}</span>
-        </div>
-        <button type="button" class="file-remove" onclick="removeFile('${file.name}', this)" aria-label="Remove file">✕</button>
-    `;
+
+    const info = document.createElement('div');
+    info.className = 'file-item-info';
+
+    const name = document.createElement('span');
+    name.className = 'file-item-name';
+    name.textContent = file.name; // textContent avoids HTML/JS injection from filenames
+
+    const size = document.createElement('span');
+    size.className = 'file-item-size';
+    size.textContent = formatFileSize(file.size);
+
+    info.append(name, size);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'file-remove';
+    removeBtn.textContent = '✕';
+    removeBtn.setAttribute('aria-label', `Remove ${file.name}`);
+    removeBtn.addEventListener('click', () => removeFile(file.name, removeBtn));
+
+    item.append(info, removeBtn);
     container.appendChild(item);
 }
 
