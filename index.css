@@ -2167,3 +2167,31 @@ textarea {
             padding: 20px;
         }
     }
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+.file-upload-area:focus-visible {
+    outline: 2px solid var(--accent-secondary);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .particle {
+        display: none;
+    }
+}

@@ -49,6 +49,7 @@ function initNavigation() {
         navToggle.classList.toggle('open');
         navLinks.classList.toggle('open');
         document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+        navToggle.setAttribute('aria-expanded', String(navLinks.classList.contains('open')));
     });
 
     // Close mobile nav on link click
@@ -56,6 +57,7 @@ function initNavigation() {
         link.addEventListener('click', () => {
             navToggle.classList.remove('open');
             navLinks.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', 'false');
             document.body.style.overflow = '';
         });
     });
@@ -143,6 +145,10 @@ function initCounterAnimation() {
                 animated = true;
                 counters.forEach(counter => {
                     const target = parseInt(counter.getAttribute('data-count'));
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        counter.textContent = target;
+                        return;
+                    }
                     const duration = 2000;
                     const startTime = performance.now();
 
@@ -209,18 +215,31 @@ function validateForm() {
         valid = false;
     }
 
+    if (!valid) {
+        const firstInvalid = document.querySelector('.form-input.error');
+        if (firstInvalid) firstInvalid.focus();
+    }
+
     return valid;
 }
 
 function showError(inputId, errorId) {
     const input = document.getElementById(inputId);
     const error = document.getElementById(errorId);
-    if (input) input.classList.add('error');
+    if (input) {
+        input.classList.add('error');
+        input.setAttribute('aria-invalid', 'true');
+        if (error) input.setAttribute('aria-describedby', errorId);
+    }
     if (error) error.classList.add('visible');
 }
 
 function clearErrors() {
     document.querySelectorAll('.form-input.error').forEach(el => el.classList.remove('error'));
+    document.querySelectorAll('[aria-invalid="true"]').forEach(el => {
+        el.removeAttribute('aria-invalid');
+        el.removeAttribute('aria-describedby');
+    });
     document.querySelectorAll('.form-error.visible').forEach(el => el.classList.remove('visible'));
 }
 
@@ -338,7 +357,7 @@ function initContactForm() {
         // Anti-spam Honeypot Check
         const honeypot = document.getElementById('form-botcheck')?.value || '';
         if (honeypot.trim() !== '') {
-            document.getElementById('form-success').classList.add('active');
+            showFormSuccess();
             return;
         }
 
@@ -401,7 +420,7 @@ function initContactForm() {
             }
 
             // Show success state
-            document.getElementById('form-success').classList.add('active');
+            showFormSuccess();
 
             // Log event in Google Analytics
             if (typeof gtag === 'function') {
@@ -436,17 +455,29 @@ function initContactForm() {
     form.querySelectorAll('.form-input').forEach(input => {
         input.addEventListener('input', () => {
             input.classList.remove('error');
+            input.removeAttribute('aria-invalid');
+            input.removeAttribute('aria-describedby');
             const errorEl = input.parentElement.querySelector('.form-error') ||
                 document.getElementById(`${input.id}-error`);
             if (errorEl) errorEl.classList.remove('visible');
         });
         input.addEventListener('change', () => {
             input.classList.remove('error');
+            input.removeAttribute('aria-invalid');
+            input.removeAttribute('aria-describedby');
             const errorEl = input.parentElement.querySelector('.form-error') ||
                 document.getElementById(`${input.id}-error`);
             if (errorEl) errorEl.classList.remove('visible');
         });
     });
+}
+
+function showFormSuccess() {
+    const box = document.getElementById('form-success');
+    if (!box) return;
+    box.classList.add('active');
+    const title = box.querySelector('.success-title');
+    if (title) title.focus();
 }
 
 function resetForm() {
@@ -464,6 +495,9 @@ function resetForm() {
 
     document.getElementById('form-success').classList.remove('active');
     clearErrors();
+
+    const nameField = document.getElementById('name');
+    if (nameField) nameField.focus();
 }
 
 /* ============================================
@@ -480,6 +514,14 @@ function initFileUpload() {
 
     // Click to upload
     uploadArea.addEventListener('click', () => fileInput.click());
+
+    // Keyboard access: Enter or Space opens the file picker
+    uploadArea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            fileInput.click();
+        }
+    });
 
     // Drag and drop
     uploadArea.addEventListener('dragover', (e) => {
@@ -605,7 +647,7 @@ function initSmoothScrolling() {
             const target = document.querySelector(href);
             if (target) {
                 target.scrollIntoView({
-                    behavior: 'smooth',
+                    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
                     block: 'start'
                 });
             }
