@@ -1,24 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-91YYLYGNWC"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-91YYLYGNWC');
-    </script>
-
-    <!-- Microsoft Clarity -->
-    <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "yy8cpjsh6q");
-    </script>
+    <!-- Analytics load only after consent (see consent.js) -->
+    <script src="consent.js" defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZetaShift Labs & SolveCraft — Privacy Policy</title>
@@ -45,7 +29,7 @@
 <body>
 <div class="container">
     <h1>Privacy Policy — ZetaShift Labs & SolveCraft</h1>
-    <p class="meta">Effective Date: June 25, 2026 &nbsp;|&nbsp; Last Updated: October 16, 2026</p>
+    <p class="meta">Effective Date: June 25, 2026 &nbsp;|&nbsp; Last Updated: October 21, 2026</p>
 
     <div class="highlight">
         <strong>Entity / Data Fiduciary:</strong> ZetaShift Labs<br>
@@ -113,9 +97,10 @@
         <p>We share your data with the following Data Processors:</p>
         <ul>
             <li><strong>Google Gemini (Google LLC, USA):</strong> Homework images are sent to Google's Gemini AI for transcription and solving. Subject to <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</li>
-            <li><strong>Render (Render Inc., USA):</strong> Backend hosting and database storage. Subject to <a href="https://render.com/privacy" target="_blank">Render's Privacy Policy</a>.</li>
+            <li><strong>Render (Render Inc., USA):</strong> Backend hosting and database storage. Render runs on Amazon Web Services (AWS) infrastructure. Subject to <a href="https://render.com/privacy" target="_blank">Render's Privacy Policy</a>.</li>
             <li><strong>Firebase Analytics & Google Analytics (Google LLC, USA):</strong> Anonymized app and website usage analytics. Subject to <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</li>
             <li><strong>Microsoft Clarity (Microsoft Corporation, USA):</strong> Website behavior analytics, heatmaps, and session replay to analyze and optimize website performance and user experience. Data is captured using cookies and tracking technologies with automatic sensitive data masking. Subject to the <a href="https://privacy.microsoft.com/privacystatement" target="_blank">Microsoft Privacy Statement</a>.</li>
+            <li><strong>Google Workspace: Apps Script, Sheets, Drive and Gmail (Google LLC, USA):</strong> Receives and stores messages sent through the website contact form, including any attachments, and emails an alert to our team. Subject to <a href="https://policies.google.com/privacy" target="_blank">Google’s Privacy Policy</a>.</li>
             <li><strong>Razorpay (Razorpay, India):</strong> Payment processing. Card/UPI details are handled entirely by Razorpay. Subject to <a href="https://razorpay.com/privacy/" target="_blank">Razorpay's Privacy Policy</a>.</li>
         </ul>
         <p>We do not sell, rent, or trade your personal data to any third party for marketing purposes.</p>
@@ -123,7 +108,7 @@
 
     <div class="section">
         <h2>7. Cross-Border Data Transfer</h2>
-        <p>Your personal data may be transferred to and stored in countries outside India, specifically the United States, where our Data Processors (Google, Render, Firebase, Microsoft) operate. These transfers are necessary for providing the service and are made in accordance with applicable data protection laws. By using SolveCraft or our website, you consent to such cross-border transfers.</p>
+        <p>Your personal data may be transferred to and stored in countries outside India, specifically the United States, where our Data Processors (Google, Render and its infrastructure provider Amazon Web Services, Firebase, Microsoft) operate. These transfers are necessary for providing the service and are made in accordance with applicable data protection laws. By using SolveCraft or our website, you consent to such cross-border transfers.</p>
     </div>
 
     <div class="section">
@@ -147,7 +132,7 @@
             <li><strong>Correction:</strong> Request correction of inaccurate personal data.</li>
             <li><strong>Erasure:</strong> Request deletion of your personal data and account.</li>
             <li><strong>Grievance Redressal:</strong> Lodge a complaint with our Grievance Officer, who will respond within 7 business days.</li>
-            <li><strong>Withdraw Consent:</strong> Withdraw consent for non-essential data processing (analytics) at any time via Profile Settings.</li>
+            <li><strong>Withdraw Consent:</strong> Withdraw consent for non-essential data processing (analytics) at any time via Profile Settings in the app, or via “Cookie settings” in the footer of our website.</li>
         </ul>
         <p>To exercise any of these rights, contact our Grievance Officer at <a href="mailto:support@zetashiftlabs.com">support@zetashiftlabs.com</a>.</p>
     </div>
@@ -187,8 +172,9 @@
         <p>When you browse our studio website (<a href="https://zetashiftlabs.com/" target="_blank">https://zetashiftlabs.com/</a>) or submit messages through our online contact form, we handle your data with the same strict privacy principles:</p>
         <ul>
             <li><strong>Contact Inquiries:</strong> Your name, email address, inquiry type, subject, message text, reference links, and any optional file attachments you choose to upload are collected solely to review, respond to, and communicate with you regarding your support requests, student feedback, educator partnerships, or business inquiries.</li>
-            <li><strong>Website Analytics & Session Replay:</strong> We partner with Microsoft Clarity and Google Analytics to understand website traffic, visitor interaction, session duration, and feature engagement. This includes anonymous metrics, heatmaps, and session recordings (which reconstruct on-page navigation while automatically masking sensitive form inputs).</li>
-            <li><strong>Cookies:</strong> Our website uses first- and third-party analytical cookies to distinguish unique visitor sessions and track aggregated traffic patterns. We do not use advertising tracking pixels or sell your browsing history to third-party data brokers.</li>
+            <li><strong>Where Contact Submissions Are Stored:</strong> Messages sent through the contact form are received by a Google Apps Script web application and saved to a Google Sheet. Attachments are saved privately in Google Drive and are not publicly shared, and an alert is emailed to our team through Gmail. All of this sits in a Google account controlled by ZetaShift Labs.</li>
+            <li><strong>Website Analytics & Session Replay:</strong> These tools load only if you click “Accept” on our cookie banner. If you decline, they do not run and no analytics cookies are set. You can change your choice at any time via “Cookie settings” in the website footer. When enabled, we use Microsoft Clarity and Google Analytics to understand website traffic, visitor interaction, session duration, and feature engagement. This includes anonymous metrics, heatmaps, and session recordings (which reconstruct on-page navigation while automatically masking sensitive form inputs).</li>
+            <li><strong>Cookies:</strong> Our website sets first- and third-party analytical cookies only after you accept them, to distinguish unique visitor sessions and track aggregated traffic patterns. We do not use advertising tracking pixels or sell your browsing history to third-party data brokers.</li>
             <li><strong>No Selling or Sharing:</strong> We do not sell, rent, monetize, or trade contact form submissions or analytics data with third-party advertisers.</li>
             <li><strong>Data Retention:</strong> Inquiries and uploaded files are securely retained only as long as necessary to address your communication, resolve your inquiry, or fulfill legal obligations. Analytics recordings are retained for standard processing periods (up to 30 days in Clarity, or up to 26 months for aggregated metrics in Google Analytics).</li>
         </ul>
@@ -216,7 +202,7 @@
 
     <div class="footer">
         &copy; 2026 ZetaShift Labs. All rights reserved.<br>
-        <a href="https://zetashiftlabs.com/">Home</a> &nbsp;|&nbsp; <a href="terms-of-service.html">Terms of Service</a> &nbsp;|&nbsp; <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="delete-account.html">Delete Account</a>
+        <a href="https://zetashiftlabs.com/">Home</a> &nbsp;|&nbsp; <a href="terms-of-service.html">Terms of Service</a> &nbsp;|&nbsp; <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="delete-account.html">Delete Account</a> &nbsp;|&nbsp; <a href="#" data-cookie-settings>Cookie settings</a>
     </div>
 </div>
 </body>
